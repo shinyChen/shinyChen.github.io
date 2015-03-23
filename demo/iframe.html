@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>iframe effects window's onload</title>
+</head>
+<body>
+  <div id="res"></div>
+  <div id="res2"></div>
+  <script>
+    function getQuery(a){
+      a=a?a:window.location.search;
+      if(a.indexOf("?")<0)
+        return {};
+      var b=a.substring(a.indexOf("?")+1,a.length).split("&"),
+          c={};
+      for(i=0;j=b[i];i++)
+        c[j.substring(0,j.indexOf("=")).toLowerCase()]=
+          j.substring(j.indexOf("=")+1,j.length);
+      return c
+    }
+    var result2 = document.getElementById("res2");
+    var result = document.getElementById("res");
+    var ifr = document.createElement("iframe");
+    var index = 0;
+    addEventListener("load", function(){
+      result2.innerHTML +="window onload fired!<br>";
+    },false);
+    
+
+    ifr.onload = function(){
+      result2.innerHTML +="iframe onload: " + ++index + "<br>";
+    };
+    
+    result.appendChild(ifr);
+    ifr.contentDocument.write("<body>test</body>");
+    if(getQuery()["closedoc"] === "1")ifr.contentDocument.close();
+  </script>
+
+</body>
+</html>
